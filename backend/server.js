@@ -7,8 +7,6 @@ const connectDB = require("./config/db");
 const { apiLimiter } = require("./middleware/rateLimiter");
 const path = require("path");
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 // ── Routes ────────────────────────────────────────────────────────────────────
 const authRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
@@ -19,6 +17,7 @@ connectDB();
 
 const app = express();
 app.set("trust proxy", 1);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ── Security Middlewares ──────────────────────────────────────────────────────
 app.use(
