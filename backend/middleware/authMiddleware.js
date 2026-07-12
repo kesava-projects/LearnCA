@@ -34,8 +34,6 @@ const protect = async (req, res, next) => {
     // 4. ── Single-session enforcement ──────────────────────────────────────
     // The JWT carries a sessionToken. If this doesn't match what's in DB,
     // the user logged in from another device/browser and this session is stale.
-    console.log("JWT sessionToken:", decoded.sessionToken);
-    console.log("DB sessionToken :", user.sessionToken);
     if (decoded.sessionToken !== user.sessionToken) {
       return res.status(401).json({
         message:
