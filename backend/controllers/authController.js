@@ -18,7 +18,7 @@ const setCookie = (res, token) => {
   res.cookie('token', token, {
     httpOnly: true,        // Not accessible via JS
     secure: isProd,        // HTTPS only in production
-    sameSite: isProd ? 'strict' : 'lax',
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
   });
 };
@@ -110,7 +110,7 @@ const logout = async (req, res) => {
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     });
 
     return res.status(200).json({ message: 'Logged out successfully.' });
