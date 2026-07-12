@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // Send httpOnly cookies automatically
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -14,13 +14,18 @@ api.interceptors.response.use(
   (error) => {
     if (
       error.response?.status === 401 &&
-      error.response?.data?.code === 'SESSION_SUPERSEDED'
+      error.response?.data?.code === "SESSION_SUPERSEDED"
     ) {
       // Another device logged in — redirect to login
-      window.location.href = '/login?reason=session_superseded';
+      if (
+        window.location.pathname !== "/login" &&
+        !window.location.search.includes("session_superseded")
+      ) {
+        window.location.replace("/login?reason=session_superseded");
+      }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
