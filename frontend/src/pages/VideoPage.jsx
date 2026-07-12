@@ -11,6 +11,8 @@ import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
 
+const API = import.meta.env.VITE_API_URL;
+
 const VideoPage = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
