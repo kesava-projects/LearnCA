@@ -17,7 +17,9 @@ api.interceptors.response.use(
       error.response?.data?.code === "SESSION_SUPERSEDED"
     ) {
       // Another device logged in — redirect to login
-      window.location.href = "/login";
+      if (window.location.pathname !== "/login") {
+        window.location.replace("/login?reason=session_superseded");
+      }
     }
     return Promise.reject(error);
   },
