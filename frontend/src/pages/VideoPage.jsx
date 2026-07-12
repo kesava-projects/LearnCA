@@ -1,18 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, Clock, BookOpen, ChevronRight } from 'lucide-react';
-import api from '../api/axios';
-import Navbar from '../components/Navbar';
-import toast from 'react-hot-toast';
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  PlayCircle,
+  Clock,
+  BookOpen,
+  ChevronRight,
+} from "lucide-react";
+import api from "../api/axios";
+import Navbar from "../components/Navbar";
+import toast from "react-hot-toast";
 
 const VideoPage = () => {
   const { courseId } = useParams();
-  const navigate     = useNavigate();
-  const videoRef     = useRef(null);
+  const navigate = useNavigate();
+  const videoRef = useRef(null);
 
-  const [course, setCourse]           = useState(null);
+  const [course, setCourse] = useState(null);
   const [activeVideo, setActiveVideo] = useState(null);
-  const [loading, setLoading]         = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -23,8 +29,8 @@ const VideoPage = () => {
           setActiveVideo(data.course.videos[0]);
         }
       } catch {
-        toast.error('Course not found.');
-        navigate('/courses');
+        toast.error("Course not found.");
+        navigate("/courses");
       } finally {
         setLoading(false);
       }
@@ -35,7 +41,7 @@ const VideoPage = () => {
   // Build streaming URL — proxy goes through Vite to Express
   // The browser sends the cookie automatically
   const getStreamUrl = (videoId) =>
-    `/api/videos/stream/${courseId}/${videoId}`;
+    `${API}/videos/stream/${courseId}/${videoId}`;
 
   const handleVideoSelect = (video) => {
     setActiveVideo(video);
@@ -70,7 +76,7 @@ const VideoPage = () => {
         <main className="video-main">
           <button
             className="back-btn"
-            onClick={() => navigate('/courses')}
+            onClick={() => navigate("/courses")}
             id="back-to-courses-btn"
           >
             <ArrowLeft size={16} />
@@ -87,7 +93,7 @@ const VideoPage = () => {
                   controlsList="nodownload"
                   onContextMenu={(e) => e.preventDefault()}
                   preload="metadata"
-                  style={{ width: '100%', height: '100%' }}
+                  style={{ width: "100%", height: "100%" }}
                 >
                   <source
                     src={getStreamUrl(activeVideo._id)}
@@ -114,7 +120,10 @@ const VideoPage = () => {
                       {activeVideo.duration}
                     </div>
                   )}
-                  <div className="video-meta-item" style={{ marginLeft: 'auto' }}>
+                  <div
+                    className="video-meta-item"
+                    style={{ marginLeft: "auto" }}
+                  >
                     <PlayCircle size={14} />
                     Video {activeVideo.order} of {course.videos.length}
                   </div>
@@ -122,8 +131,17 @@ const VideoPage = () => {
               </div>
             </>
           ) : (
-            <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-secondary)' }}>
-              <PlayCircle size={48} style={{ margin: '0 auto 16px', opacity: 0.4 }} />
+            <div
+              style={{
+                textAlign: "center",
+                padding: "80px 0",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <PlayCircle
+                size={48}
+                style={{ margin: "0 auto 16px", opacity: 0.4 }}
+              />
               <p>No videos available in this course yet.</p>
             </div>
           )}
@@ -143,13 +161,17 @@ const VideoPage = () => {
                 <div
                   key={video._id}
                   id={`video-item-${video._id}`}
-                  className={`video-list-item ${activeVideo?._id === video._id ? 'active' : ''}`}
+                  className={`video-list-item ${activeVideo?._id === video._id ? "active" : ""}`}
                   onClick={() => handleVideoSelect(video)}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && handleVideoSelect(video)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && handleVideoSelect(video)
+                  }
                   aria-label={`Play ${video.title}`}
-                  aria-current={activeVideo?._id === video._id ? 'true' : 'false'}
+                  aria-current={
+                    activeVideo?._id === video._id ? "true" : "false"
+                  }
                 >
                   <div className="video-number">{video.order}</div>
                   <div className="video-list-info">
@@ -158,13 +180,20 @@ const VideoPage = () => {
                     </div>
                     {video.duration && (
                       <div className="video-list-duration">
-                        <Clock size={10} style={{ display: 'inline', marginRight: 4 }} />
+                        <Clock
+                          size={10}
+                          style={{ display: "inline", marginRight: 4 }}
+                        />
                         {video.duration}
                       </div>
                     )}
                   </div>
                   {activeVideo?._id === video._id && (
-                    <PlayCircle size={16} color="var(--accent-1)" style={{ flexShrink: 0 }} />
+                    <PlayCircle
+                      size={16}
+                      color="var(--accent-1)"
+                      style={{ flexShrink: 0 }}
+                    />
                   )}
                 </div>
               ))}
